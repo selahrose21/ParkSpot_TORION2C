@@ -1,10 +1,32 @@
 package com.torion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserDao {
+
+    public UserDao(){
+        try(Connection conn = DatabaseConnection.getConnection();
+            Statement stmt = conn.createStatement()){
+            defaultAdminGenerator(conn);
+        }catch(SQLException e){
+            System.err.println("Error seeding default admin: " + e.getMessage());
+        }
+    }
+
+    public void defaultAdminGenerator(Connection conn){
+        String checkSql = "SELECT COUNT(*) FROM User WHERE role = 'ADMIN'";
+        String insertSql = "INSERT INTO User(fullname, username, password_hash, role, status) VALUES ('adminuser', 'admin', 'admin123', 'ADMIN', 'APPROVED')";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(checkSql)) {
+            if (rs.next() && rs.getInt(1) == 0) {
+                stmt.executeUpdate(insertSql);
+                System.out.println("-> Default Admin created (Username: admin | Password: admin123)");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error seeding default admin: " + e.getMessage());
+        }
+    }
 
     public static boolean registerUser(String full_name, String username, String password_hash, String role) {
 
