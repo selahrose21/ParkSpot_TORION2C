@@ -30,7 +30,7 @@ public class Main {
                 System.out.print("Enter password: ");
                 String pass = sc.nextLine();
 
-                System.out.println("Select Role [1] Admin [2] Attendant [3] Customer");
+                System.out.print("Select Role [1] Admin [2] Attendant [3] Customer: ");
                 int roleChoice = sc.nextInt();
                 String role;
                 switch (roleChoice){
