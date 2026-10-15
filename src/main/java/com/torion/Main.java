@@ -1,6 +1,8 @@
 package com.torion;
 
 import com.torion.dao.UserDao;
+import com.torion.model.User;
+import com.torion.ui.AdminMenu;
 
 import java.util.Scanner;
 
@@ -21,6 +23,7 @@ public class Main {
 
         switch(choice){
             case "1":
+                handleLogin();
                 break;
             case "2":
                 System.out.print("Enter full name: ");
@@ -56,6 +59,24 @@ public class Main {
                     System.out.println("Invalid role selection!");
                 }
 
+        }
+
+    }
+
+    private static void handleLogin(){
+        System.out.print("Enter username: ");
+        String username = sc.nextLine();
+        System.out.print("Enter password: ");
+        String password_hash = sc.nextLine();
+
+        User user = userDao.login(username, password_hash);
+
+        if (user != null){
+            System.out.println("/n ->Welcome " +user.username()+ " | ROLE: " +user.role()+"");
+            switch(user.role()){
+                case "ADMIN" -> new AdminMenu(userDao, sc).display(user);
+                default -> System.out.println("Account role not found");
+            }
         }
 
     }
