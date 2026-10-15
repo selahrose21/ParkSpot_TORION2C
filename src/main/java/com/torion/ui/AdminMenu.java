@@ -30,6 +30,16 @@ public class AdminMenu {
             System.out.print("Choose an option (1-7): ");
 
             String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "7":
+                    loggedIn = false;
+                    System.out.println("-> Logged out successfully. Returning to main menu...");
+                    break;
+                default:
+                    System.out.println("Invalid option. Please choose 1-7.");
+                    break;
+            }
         }
     }
 }
